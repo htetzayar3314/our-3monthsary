@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 3 Monthsary ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Quicksand:wght@300;500;700&family=Noto+Sans+Myanmar:wght@300;500;700&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root {
+            --bg-deep: #050510;
+            --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --primary: #ff2a6d; /* Neon Pink */
+            --secondary: #05d9e8; /* Cyan */
+            --gold: #ffd700; /* Accent for Milestone */
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* --- GLOBAL RESETS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Pyidaungsu', 'Noto Sans Myanmar', 'Quicksand', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        /* --- UTILITIES --- */
+        .hidden { display: none !important; }
+        .text-gradient {
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Animation Classes for Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- BACKGROUND CANVAS (Floating Hearts) --- */
+        #bg-hearts {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- LANDING SECTION (IMMERSIVE) --- */
+        #landing {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            z-index: 1000;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        canvas#particle-heart {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+
+        .landing-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            mix-blend-mode: overlay; 
+        }
+
+        h1.hero-title {
+            font-family: 'Cinzel Decorative', 'Pyidaungsu', cursive;
+            font-size: 3.2rem;
+            color: white;
+            text-shadow: 0 0 20px var(--primary);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            animation: pulseText 3s infinite alternate;
+            padding: 0 15px;
+        }
+
+        /* 3 Months Badge */
+        .monthsary-badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+            font-weight: 500;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulseText {
+            0% { text-shadow: 0 0 20px var(--primary); }
+            100% { text-shadow: 0 0 40px var(--secondary); }
+        }
+
+        .enter-btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--bg-deep);
+            background: var(--text-main);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+            letter-spacing: 1px;
+            font-family: 'Pyidaungsu', sans-serif;
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px var(--secondary);
+            background: var(--secondary);
+        }
+
+        /* --- MAIN CONTENT WRAPPER --- */
+        #main-app {
+            position: relative;
+            z-index: 10;
+            background: transparent;
+        }
+
+        /* Background "III" or "90" Asset */
+        .big-milestone {
+            position: absolute;
+            top: 15%;
+            right: -5%;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 25vw;
+            color: rgba(255, 255, 255, 0.02);
+            pointer-events: none;
+            z-index: 0;
+            line-height: 1;
+            user-select: none;
+        }
+
+        /* Ambient Background Glow */
+        .ambient-glow {
+            position: fixed;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(255,42,109,0.15) 0%, rgba(0,0,0,0) 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero h2 {
+            font-family: 'Pyidaungsu', 'Cinzel Decorative', cursive;
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            position: relative;
+            z-index: 2;
+            padding: 0 15px;
+        }
+
+        /* --- TIMELINE SECTION --- */
+        .timeline-section {
+            padding: 100px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            text-align: center;
+            font-family: 'Pyidaungsu', 'Cinzel Decorative', cursive;
+            font-size: 2.3rem;
+            margin-bottom: 60px;
+            color: var(--secondary);
+            text-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
+        }
+
+        .timeline {
+            position: relative;
+            border-left: 2px solid rgba(255,255,255,0.1);
+            margin-left: 20px;
+        }
+
+        .timeline-item {
+            margin-bottom: 60px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .timeline-date {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: block;
+            font-family: 'Pyidaungsu', sans-serif;
+        }
+
+        .timeline-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s;
+        }
+
+        .timeline-content:hover {
+            transform: translateX(10px);
+            border-color: var(--secondary);
+        }
+
+        .timeline-content h3 { margin-bottom: 12px; color: white; font-size: 1.4rem; font-weight: bold; }
+        .timeline-content p { color: var(--text-muted); line-height: 1.7; font-size: 1.05rem; }
+
+        /* --- GALLERY SECTION (3D TILT) --- */
+        .gallery-section {
+            padding: 100px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .tilt-card {
+            position: relative;
+            height: 400px;
+            perspective: 1000px; 
+            cursor: pointer;
+        }
+
+        .tilt-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.1s ease;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+
+        .tilt-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .tilt-inner:hover img {
+            transform: scale(1.1);
+        }
+
+        .caption-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, black, transparent);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .tilt-inner:hover .caption-overlay {
+            transform: translateY(0);
+        }
+
+        .caption-overlay h4 { color: var(--secondary); margin-bottom: 5px; font-family: 'Pyidaungsu', sans-serif; font-size: 1.1rem; }
+
+        /* --- MUSIC PLAYER (VINYL STYLE) --- */
+        .music-widget {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px 10px 10px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .vinyl-record {
+            width: 50px; height: 50px;
+            background: #111;
+            border-radius: 50%;
+            border: 2px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: spin 4s linear infinite;
+            animation-play-state: paused;
+            position: relative;
+        }
+        
+        .vinyl-record::after {
+            content: '';
+            width: 15px; height: 15px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .music-info {
+            color: white;
+            font-family: 'Pyidaungsu', sans-serif;
+        }
+        .music-info small { display: block; color: var(--secondary); font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; }
+        .music-info span { font-size: 0.9rem; font-weight: 600; }
+
+        .music-widget.playing .vinyl-record { animation-play-state: running; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- MOBILE TWEAKS --- */
+        @media (max-width: 768px) {
+            h1.hero-title { font-size: 2.2rem; }
+            .hero h2 { font-size: 2.2rem; }
+            .big-milestone { top: 10%; font-size: 20vw; right: -20%; }
+            .gallery-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-hearts"></canvas>
+
+    <section id="landing">
+        <canvas id="particle-heart"></canvas>
+        <div class="landing-content">
+            <h1 class="hero-title">Happy 3 Monthsary ကလေးလေး ❤️</h1>
+            <div class="monthsary-badge">ဖြတ်သန်းခဲ့တဲ့ ရက်ပေါင်း ၉၀ တိုင်တိုင်</div>
+            <button class="enter-btn" id="enter-btn">တို့နှစ်ယောက်ရဲ့ ဖြတ်သန်းမှုလေးတွေ ကြည့်မယ်</button>
+        </div>
+    </section>
+
+    <div id="main-app" class="hidden">
+        <div class="ambient-glow"></div>
+        
+        <div class="big-milestone">III</div>
+
+        <header class="hero reveal">
+            <h2 class="text-gradient">ကိုကို့ ခလေးနဲ့အတူ ဖြတ်သန်းခဲ့ရတဲ့ ရက်ပေါင်း ၉၁</h2>
+            <p>လူတစ်ယောက်ကို သဘောကျဖို့က တစ်မိနစ်ပဲ လိုကောင်းလိုလိမ့်မယ်၊ ချစ်မိသွားဖို့ကျ တစ်ရက်လောက်ပေါ့... ဒါပေမဲ့ အဲဒီလူကို ပြန်မေ့ပစ်ဖို့ကျ ဘဝတစ်ခုစာတောင် လောက်မှာမဟုတ်ဘူး။ လွန်ခဲ့တဲ့ ရက်ပေါင်း ၉၁ ကစပြီး ကိုကို့ရဲ့ဘဝတစ်ခုစာ ခရီးလမ်းကို ခလေးနဲ့အတူ အစပြုခွင့်ရခဲ့လို့ တကယ်ကို ဝမ်းသာပျော်ရွှင်ရပါတယ် ခလေးရယ်။</p>
+        </header>
+
+        <section class="timeline-section">
+            <h3 class="section-header reveal">ကိုကို့ခလေးနဲ့ ပထမဆုံး သုံးလတာ ခရီး</h3>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-date">ပထမဆုံးလ - ကိုကို့ခလေးနဲ့ ရင်ခုန်သံများမွေးဖွားလာသောအခါ</span>
+                    <div class="timeline-content">
+                        <h3>မထင်မှတ်ဘဲ ဆုံတွေ့ခဲ့ကြသူများ</h3>
+                        <p>ပထမဆုံးလကတော့ ကိုကို့ခလေးနဲ့ မေ့မရနိုင်တဲ့ အမှတ်တရတွေအများကြီးရှိခဲ့တာပေါ့။ ကိုကိုချစ်တဲ့ ခလေးလေးရဲ့ နှုတ်ခမ်းကနေ "ချစ်တယ်" လို့ပြောတဲ့ချိန်ကနေစပြီး ကိုကိုဘဝမှာ အရမ်းပျော်ခဲ့ရတာပေါ့။ ကိုကို့ကို အခက်ခဲတွေကြားကနေရွေးချယ်ပြီး ချစ်ပေးခဲ့လို့ ကိုကို့ခလေးကို ကျေးဇူးအများကြီးတင်ပါတယ်ဗျာ❤️</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-date">ဒုတိယမြောက်လ - ပိုမိုနက်ရှိုင်းလာတဲ့ သံယောဇဉ်</span>
+                    <div class="timeline-content">
+                        <h3>ဒီထက်ပိုပြီး မြတ်နိုးမိတဲ့အခါ</h3>
+                        <p>တစ်ယောက်အကြောင်း တစ်ယောက် ပိုပြီးသိလာခွင့်ရခဲ့တဲ့အချိန်ပေါ့။ ကိုကို့ခလေးရဲ့ အကျင့်တွေ၊ အမူအယာတွေ၊ စိတ်ထားလေးတွေ ပိုပြီးသိလာရတဲ့အခါ ကိုကိုပိုပြီးချစ်လာတယ်။ ကိုကို့ခလေးကို ဒီလမှာ ငိုအောင်လုပ်ခဲ့မိတာ အော်ခဲ့မိတာတွေအတွက် ကိုကိုတောင်းပန်ပါတယ်နော်🥺</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <span class="timeline-date">တတိယမြောက်လ - ကိုကိုတို့နှစ်ယောက်ရဲ့ ကမ္ဘာ</span>
+                    <div class="timeline-content">
+                        <h3>ဒီနေ့၊ ဒီအချိန်၊ အခုထိတိုင်</h3>
+                        <p>ဒီနေ့ဆို ကိုကို့နဲ့ခလေး ချစ်သူသက်တမ်း ၃ လပြည့်ခဲ့ပြီနော်။ ကိုကို့ခလေးဟာ ကိုကို့အတွက်တော့ အကောင်းဆုံး အမျိုးသမီးလေး၊ အရာရာကို ရင်ဖွင့်တိုင်ပင်လို့ရတဲ့ ကိုကို့ဘဝရဲ့ တစ်ခုတည်းသော ပျော်ရွှင်ခြင်း အစစ်အမှန်လေးပါ။ အခုလို လှပတဲ့ လပေါင်းများစွာ၊ နှစ်ပေါင်းများစွာကနေ ဆယ်စုနှစ်ပေါင်းများစွာအထိ လက်တွဲသွားကြစို့နော် ကိုကို့ခလေးလေးရယ်။ အများကြီးချစ်တယ်😘😘</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery-section">
+            <h3 class="section-header reveal">ကိုကို့အကြိုက်ဆုံးပုံလေးတွေ😁</h3>
+            <div class="gallery-grid" id="gallery-grid">
+                </div>
+        </section>
+
+        <footer style="text-align:center; padding: 40px; color: rgba(255,255,255,0.3); position: relative; z-index: 2; font-family: 'Pyidaungsu', sans-serif;">
+            <p>Happy 3rd Monthsary နော် ကိုကို့ခလေးလေး ❤️</p>
+        </footer>
+    </div>
+
+    <div class="music-widget" id="music-widget">
+        <div class="vinyl-record"></div>
+        <div class="music-info">
+            <small>ကိုကို့ခလေးလေးအတွက်</small>
+            <span>Special Music🎵</span>
+        </div>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-111667.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- CONFIGURATION ---
+        // မင်းပေးထားတဲ့ Drive links ၆ ခုလုံးကို သေချာပြောင်းလဲထည့်သွင်းပေးထားပါတယ်
+        const photos = [
+            { src: "https://lh3.googleusercontent.com/d/1sEUeauKbUupDu_PEhjrDWavCEfH1rRsz", title: "ချောကလက် နဲ့ နို့" },
+            { src: "https://lh3.googleusercontent.com/d/1ieFaJiLi7ws0OuBE5-AhwAWlGjQjGy2L", title: "ကိုကို့အကြိုက်ဆုံး ဝတ်စုံလေး" },
+            { src: "https://lh3.googleusercontent.com/d/1r1DRxH8QhABnFgu3anKgrh69UrW1mj3q", title: "ချစ်စရာလေးပါ" },
+            { src: "https://lh3.googleusercontent.com/d/16vWjA6zdXHDLBNX0ItndtAAfsEw70AyT", title: "တည်ငြိမ်တဲ့အကြည့်နဲ့ကွာ" },
+            { src: "https://lh3.googleusercontent.com/d/1H0_Jt4ykr2oTK3AzqlYM3xkG3WNgOKxA", title: "Cute Type လေးပါပေါ့" },
+            { src: "https://lh3.googleusercontent.com/d/1skfbvcc8LYrKbaJrqvz3txqvPv1aktG4", title: "အမေ့ချွေးမလေး" }
+        ];
+
+        // --- DOM ELEMENTS ---
+        const landing = document.getElementById('landing');
+        const mainApp = document.getElementById('main-app');
+        const enterBtn = document.getElementById('enter-btn');
+        const galleryGrid = document.getElementById('gallery-grid');
+        const musicWidget = document.getElementById('music-widget');
+        const bgMusic = document.getElementById('bg-music');
+        const landingCanvas = document.getElementById('particle-heart');
+        const landingCtx = landingCanvas.getContext('2d');
+        const bgCanvas = document.getElementById('bg-hearts');
+        const bgCtx = bgCanvas.getContext('2d');
+
+        // --- PART 1: LANDING PAGE 3D PARTICLE HEART ---
+        let lWidth, lHeight;
+        let particles = [];
+        
+        function getHeartPosition(t) {
+            return {
+                x: 16 * Math.pow(Math.sin(t), 3),
+                y: -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))
+            };
+        }
+
+        class LandingParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                let t = Math.random() * Math.PI * 2;
+                let pos = getHeartPosition(t);
+                const scale = 15; 
+                this.tx = pos.x * scale + lWidth / 2;
+                this.ty = pos.y * scale + lHeight / 2;
+                
+                this.x = Math.random() * lWidth;
+                this.y = Math.random() * lHeight;
+                
+                this.size = Math.random() * 2 + 0.5;
+                this.color = Math.random() > 0.5 ? '#ff2a6d' : '#05d9e8';
+                this.speed = Math.random() * 0.05 + 0.02;
+                this.vx = (this.tx - this.x) * this.speed;
+                this.vy = (this.ty - this.y) * this.speed;
+                this.friction = 0.94;
+            }
+
+            update(time) {
+                this.x += (this.tx - this.x) * 0.05;
+                this.y += (this.ty - this.y) * 0.05;
+
+                const beat = 1 + 0.1 * Math.sin(time * 3);
+                const dx = this.x - lWidth/2;
+                const dy = this.y - lHeight/2;
+                
+                this.renderX = lWidth/2 + dx * beat;
+                this.renderY = lHeight/2 + dy * beat;
+            }
+
+            draw() {
+                landingCtx.fillStyle = this.color;
+                landingCtx.shadowBlur = 10;
+                landingCtx.shadowColor = this.color;
+                landingCtx.beginPath();
+                landingCtx.arc(this.renderX, this.renderY, this.size, 0, Math.PI * 2);
+                landingCtx.fill();
+            }
+        }
+
+        function initLandingHeart() {
+            lWidth = landingCanvas.width = window.innerWidth;
+            lHeight = landingCanvas.height = window.innerHeight;
+            particles = [];
+            for (let i = 0; i < 600; i++) {
+                particles.push(new LandingParticle());
+            }
+        }
+
+        function animateLandingHeart(time) {
+            if (landing.classList.contains('hidden')) return;
+            landingCtx.clearRect(0, 0, lWidth, lHeight);
+            const t = time * 0.001;
+            particles.forEach(p => {
+                p.update(t);
+                p.draw();
+            });
+            requestAnimationFrame(animateLandingHeart);
+        }
+
+        // --- PART 2: BACKGROUND FLOATING HEARTS ---
+        let bWidth, bHeight;
+        let floaters = [];
+
+        class FloatingHeart {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * bHeight; 
+            }
+
+            reset() {
+                this.x = Math.random() * bWidth;
+                this.y = bHeight + 50; 
+                this.size = Math.random() * 20 + 10; 
+                this.speed = Math.random() * 1 + 0.5;
+                this.opacity = Math.random() * 0.3 + 0.1; 
+                this.wobble = Math.random() * Math.PI * 2;
+                this.wobbleSpeed = Math.random() * 0.05 + 0.02;
+                this.color = Math.random() > 0.5 ? '#ff2a6d' : '#05d9e8';
+            }
+
+            update() {
+                this.y -= this.speed;
+                this.wobble += this.wobbleSpeed;
+                this.x += Math.sin(this.wobble) * 0.5;
+
+                if (this.y < -50) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                bgCtx.globalAlpha = this.opacity;
+                bgCtx.fillStyle = this.color;
+                bgCtx.font = `${this.size}px Arial`;
+                bgCtx.fillText('❤', this.x, this.y);
+                bgCtx.globalAlpha = 1.0; 
+            }
+        }
+
+        function initBgHearts() {
+            bWidth = bgCanvas.width = window.innerWidth;
+            bHeight = bgCanvas.height = window.innerHeight;
+            floaters = [];
+            for (let i = 0; i < 40; i++) {
+                floaters.push(new FloatingHeart());
+            }
+        }
+
+        function animateBgHearts() {
+            bgCtx.clearRect(0, 0, bWidth, bHeight);
+            floaters.forEach(f => {
+                f.update();
+                f.draw();
+            });
+            requestAnimationFrame(animateBgHearts);
+        }
+
+        // --- RESIZE HANDLERS ---
+        window.addEventListener('resize', () => {
+            initLandingHeart();
+            initBgHearts();
+        });
+
+        // --- GALLERY & 3D TILT EFFECT ---
+        function renderGallery() {
+            galleryGrid.innerHTML = '';
+            photos.forEach((photo, index) => {
+                const card = document.createElement('div');
+                card.className = 'tilt-card reveal';
+                card.innerHTML = `
+                    <div class="tilt-inner">
+                        <img src="${photo.src}" alt="${photo.title}">
+                        <div class="caption-overlay">
+                            <h4>${photo.title}</h4>
+                        </div>
+                    </div>
+                `;
+                
+                // Add Tilt Logic
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -15; 
+                    const rotateY = ((x - centerX) / centerX) * 15;
+
+                    const inner = card.querySelector('.tilt-inner');
+                    inner.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    const inner = card.querySelector('.tilt-inner');
+                    inner.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+                });
+
+                galleryGrid.appendChild(card);
+            });
+        }
+
+        // --- SCROLL ANIMATIONS ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // --- INITIALIZATION ---
+        initLandingHeart();
+        initBgHearts();
+        requestAnimationFrame(animateLandingHeart);
+        requestAnimationFrame(animateBgHearts);
+
+        // --- INTERACTION LOGIC ---
+        enterBtn.addEventListener('click', () => {
+            landing.style.opacity = '0';
+            setTimeout(() => {
+                landing.classList.add('hidden');
+                mainApp.classList.remove('hidden');
+                renderGallery();
+                
+                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+                bgMusic.play().then(() => {
+                    musicWidget.classList.add('playing');
+                }).catch(e => console.log("Autoplay prevented", e));
+            }, 1500);
+        });
+
+        // Music Toggle
+        musicWidget.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicWidget.classList.add('playing');
+            } else {
+                bgMusic.pause();
+                musicWidget.classList.remove('playing');
+            }
+        });
+    </script>
+</body>
+</html>
